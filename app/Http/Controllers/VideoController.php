@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Channel;
+use App\Models\Video;
 use Illuminate\Http\Request;
 
-class ChannelController extends Controller
+class VideoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Channel::query()->with('videos')->get();
+        return Video::query()->with('channel')->get();
     }
 
     /**
@@ -20,34 +20,30 @@ class ChannelController extends Controller
      */
     public function store(Request $request)
     {
-        Channel::query()->create([
-
-        ]);
+        Video::query()->create([]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Channel $channel)
+    public function show(Video $video)
     {
-        return $channel->load('videos');
+        return $video->load('channel');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Channel $channel)
+    public function update(Request $request, Video $video)
     {
-        $channel->update([
-
-        ]);
+        $video->update([]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Channel $channel)
+    public function destroy(Video $video)
     {
-        $channel->delete();
+        $video->delete();
     }
 }
