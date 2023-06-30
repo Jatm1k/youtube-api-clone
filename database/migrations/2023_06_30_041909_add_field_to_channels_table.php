@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('channels', function (Blueprint $table) {
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(User::class)->after('id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

@@ -12,7 +12,7 @@ class VideoController extends Controller
      */
     public function index()
     {
-        return Video::query()->with('channel')->get();
+        return Video::query()->with(['channel', 'categories'])->get();
     }
 
     /**
@@ -28,7 +28,7 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        return $video->load('channel');
+        return $video->load(['channel', 'categories']);
     }
 
     /**
