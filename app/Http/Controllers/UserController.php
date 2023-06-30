@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Channel;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ChannelController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Channel::query()->with(['videos', 'user'])->get();
+        return User::query()->with('channels')->get();
     }
 
     /**
@@ -20,34 +20,30 @@ class ChannelController extends Controller
      */
     public function store(Request $request)
     {
-        Channel::query()->create([
-
-        ]);
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Channel $channel)
+    public function show(User $user)
     {
-        return $channel->load(['videos', 'user']);
+        return $user->load('channels');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Channel $channel)
+    public function update(Request $request, User $user)
     {
-        $channel->update([
-
-        ]);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Channel $channel)
+    public function destroy(User $user)
     {
-        $channel->delete();
+        //
     }
 }
