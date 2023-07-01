@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Period;
+use App\Http\Requests\Video\IndexVideoRequest;
 use App\Models\Video;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class VideoController extends Controller
@@ -10,9 +13,11 @@ class VideoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexVideoRequest $request)
     {
-        return Video::query()->with(['channel', 'categories'])->get();
+        $period = Period::tryFrom($request->input('period'));
+
+        return Video::query()->fromPeriod($period)->search($request->input('query'))->get();
     }
 
     /**
