@@ -16,22 +16,27 @@ class CategoryVideoSeeder extends Seeder
      */
     public function run(): void
     {
-        $videoIds = Video::query()->pluck('id')->all();
-        $categoryIds = Category::query()->pluck('id')->all();
+        $videoIds = Video::query()->pluck('id');
+        $categoryIds = Category::query()->pluck('id');
 
-        $categoryVideo = [];
+        $categoryVideos = $categoryIds->flatMap(
+            fn ($categoryId) => $this->categoryVideos($categoryId, $this->randomVideoIds($videoIds))
+        );
 
-        foreach ($categoryIds as $categoryId) {
-            $randomVideoIds = Arr::random($videoIds, rand(1, count($videoIds)));
+        DB::table('category_video')->insert($categoryVideos->all());
+    }
 
-            foreach ($randomVideoIds as $videoId) {
-                $categoryVideo[] = [
-                    'category_id' => $categoryId,
-                    'video_id' => $videoId,
-                ];
-            }
-        }
+    private function categoryVideos(int $categoryId, $videoIds)
+    {
+        return $videoIds->map(fn ($videoId) => [
+                'category_id' => $categoryId,
+                'video_id' => $videoId,
+            ]
+        );
+    }
 
-        DB::table('category_video')->insert($categoryVideo);
+    private function randomVideoIds($videoIds)
+    {
+        return $videoIds->random(rand(1, count($videoIds)));
     }
 }
