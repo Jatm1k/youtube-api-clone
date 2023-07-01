@@ -17,7 +17,12 @@ class VideoController extends Controller
     {
         $period = Period::tryFrom($request->input('period'));
 
-        return Video::query()->fromPeriod($period)->search($request->input('query'))->get();
+        return Video::query()
+            ->fromPeriod($period)
+            ->search($request->input('query'))
+            ->limit($request->input('limit'))
+            ->orderBy($request->input('sort', 'created_at'), $request->input('order', 'desc'))
+            ->get();
     }
 
     /**

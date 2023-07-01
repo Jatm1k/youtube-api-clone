@@ -13,6 +13,9 @@ class IndexVideoRequest extends ApiRequest
         return [
             'period' => ['nullable', 'string', Rule::in(['year', 'month', 'week', 'day', 'hour'])],
             'query' => ['nullable', 'string'],
+            'limit' => ['nullable', 'int'],
+            'sort' => ['nullable', 'string'],
+            'order' => ['nullable', 'string', Rule::in(['desc', 'asc'])],
         ];
     }
 }
