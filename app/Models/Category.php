@@ -16,4 +16,11 @@ class Category extends Model
     {
         return $this->belongsToMany(Video::class);
     }
+
+    public function scopeSearch($query, ?string $search)
+    {
+        return $search ? $query
+            ->where('name', 'like', "%{$search}%")
+            : $query;
+    }
 }

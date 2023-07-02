@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\IndexCategoryRequest;
+use App\Http\Requests\Category\ShowCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -10,9 +12,13 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexCategoryRequest $request)
     {
-        return Category::query()->with('videos')->get();
+        return Category::query()
+            ->with($request->input('with', []))
+            ->search($request->input('query'))
+            ->orderBy($request->input('sort', 'name'), $request->input('order', 'asc'))
+            ->simplePaginate($request->input('limit'));
     }
 
     /**
@@ -28,9 +34,9 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(ShowCategoryRequest $request, Category $category)
     {
-        return $category->load('videos');
+        return $category->load($request->input('with', []));
     }
 
     /**
