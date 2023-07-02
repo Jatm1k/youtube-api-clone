@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\IndexUserRequest;
+use App\Http\Requests\User\ShowUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,9 +12,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexUserRequest $request)
     {
-        return User::query()->with('channels')->get();
+        return User::query()
+            ->with($request->input('with', []))
+            ->search($request->input('query'))
+            ->orderBy($request->input('sort', 'name'), $request->input('order', 'asc'))
+            ->simplePaginate($request->input('limit'));
     }
 
     /**
@@ -26,9 +32,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(ShowUserRequest $request, User $user)
     {
-        return $user->load('channels');
+        return $user->load($request->input('with', []));
     }
 
     /**

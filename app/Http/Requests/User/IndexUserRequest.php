@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Channel;
+namespace App\Http\Requests\User;
 
 use App\Http\Requests\ApiRequest;
 use Illuminate\Validation\Rule;
 
-class IndexChannelRequest extends ApiRequest
+class IndexUserRequest extends ApiRequest
 {
     public function rules(): array
     {
