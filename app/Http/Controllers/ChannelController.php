@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Period;
+use App\Http\Requests\Channel\IndexChannelRequest;
+use App\Http\Requests\Channel\ShowChannelRequest;
 use App\Models\Channel;
 use Illuminate\Http\Request;
 
@@ -10,9 +13,13 @@ class ChannelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexChannelRequest $request)
     {
-        return Channel::query()->with(['videos', 'user'])->get();
+        return Channel::query()
+            ->with($request->input('with', []))
+            ->search($request->input('query'))
+            ->orderBy($request->input('sort', 'name'), $request->input('order', 'asc'))
+            ->simplePaginate($request->input('limit'));
     }
 
     /**
@@ -28,9 +35,9 @@ class ChannelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Channel $channel)
+    public function show(ShowChannelRequest $request, Channel $channel)
     {
-        return $channel->load(['videos', 'user']);
+        return $channel->load($request->input('with', []));
     }
 
     /**

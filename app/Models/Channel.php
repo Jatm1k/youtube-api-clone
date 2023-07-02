@@ -23,4 +23,11 @@ class Channel extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeSearch($query, ?string $search)
+    {
+        return $search ? $query
+            ->where('name', 'like', "%{$search}%")
+            : $query;
+    }
+
 }
