@@ -16,6 +16,7 @@ class IndexVideoRequest extends ApiRequest
             'limit' => ['nullable', 'int'],
             'sort' => ['nullable', 'string'],
             'order' => ['nullable', 'string', Rule::in(['desc', 'asc'])],
+            'with' => ['nullable'],
         ];
     }
 }
