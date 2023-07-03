@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\WithRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, WithRelationships;
 
     protected static $relationships = ['channels'];
 
@@ -43,11 +44,5 @@ class User extends Authenticatable
             ->where('name', 'like', "%{$search}%")
             ->orWhere('email', 'like', "%{$search}%")
             : $query;
-    }
-
-
-    public function scopeWithRelationships($query, array|string $with)
-    {
-        return $query->with(array_intersect(Arr::wrap($with), static::$relationships));
     }
 }
