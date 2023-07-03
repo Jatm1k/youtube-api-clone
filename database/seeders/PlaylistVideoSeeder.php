@@ -18,7 +18,7 @@ class PlaylistVideoSeeder extends Seeder
      */
     public function run(): void
     {
-        Playlist::all()
+        Playlist::with('channel.videos')->get()
             ->each(fn(Playlist $playlist) => $playlist->videos()->saveMany($this->randomVideosFrom($playlist->channel)));
     }
 
