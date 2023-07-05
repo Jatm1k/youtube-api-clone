@@ -15,7 +15,7 @@ class PlaylistController extends Controller
     public function index(IndexPlaylistRequest $request)
     {
         return Playlist::query()
-            ->withRelationships($request->input('with', []))
+            ->withRelationships($request->input('with'))
             ->search($request->input('query'))
             ->orderBy($request->input('sort', 'name'), $request->input('order', 'asc'))
             ->simplePaginate($request->input('limit'));
@@ -34,7 +34,7 @@ class PlaylistController extends Controller
      */
     public function show (ShowPlaylistRequest $request, Playlist $playlist)
     {
-        return $playlist->load($request->input('with', []));
+        return $playlist->loadRelationships($request->input('with'));
     }
 
     /**

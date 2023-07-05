@@ -16,7 +16,7 @@ class ChannelController extends Controller
     public function index(IndexChannelRequest $request)
     {
         return Channel::query()
-            ->withRelationships($request->input('with', []))
+            ->withRelationships($request->input('with'))
             ->search($request->input('query'))
             ->orderBy($request->input('sort', 'name'), $request->input('order', 'asc'))
             ->simplePaginate($request->input('limit'));
@@ -37,7 +37,7 @@ class ChannelController extends Controller
      */
     public function show(ShowChannelRequest $request, Channel $channel)
     {
-        return $channel->load($request->input('with', []));
+        return $channel->loadRelationships($request->input('with'));
     }
 
     /**

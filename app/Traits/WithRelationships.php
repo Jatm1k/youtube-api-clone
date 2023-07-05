@@ -7,15 +7,25 @@ use Illuminate\Support\Arr;
 trait WithRelationships
 {
 
-    public function scopeWithRelationships($query, array|string $with)
+    public function scopeWithRelationships($query, $with)
     {
-        $validRelationships = collect($with)
+
+
+        return $query->with($this->validRelationships($with));
+    }
+
+    public function loadRelationships($load)
+    {
+        return $this->load($this->validRelationships($load));
+    }
+
+    private function validRelationships($with)
+    {
+        return collect($with)
             ->map(fn(string $relationships) => explode('.', $relationships))
             ->filter(fn (array $relationships) => (new static)->hasRelationships($relationships))
             ->map(fn(array $relationships) => implode('.', $relationships))
             ->all();
-
-        return $query->with($validRelationships);
     }
 
     private function hasRelationships(array $relationships)

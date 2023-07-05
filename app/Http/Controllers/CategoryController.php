@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index(IndexCategoryRequest $request)
     {
         return Category::query()
-            ->withRelationships($request->input('with', []))
+            ->withRelationships($request->input('with'))
             ->search($request->input('query'))
             ->orderBy($request->input('sort', 'name'), $request->input('order', 'asc'))
             ->simplePaginate($request->input('limit'));
@@ -36,7 +36,7 @@ class CategoryController extends Controller
      */
     public function show(ShowCategoryRequest $request, Category $category)
     {
-        return $category->load($request->input('with', []));
+        return $category->loadRelationships($request->input('with'));
     }
 
     /**

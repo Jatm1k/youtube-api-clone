@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index(IndexUserRequest $request)
     {
         return User::query()
-            ->withRelationships($request->input('with', []))
+            ->withRelationships($request->input('with'))
             ->search($request->input('query'))
             ->orderBy($request->input('sort', 'name'), $request->input('order', 'asc'))
             ->simplePaginate($request->input('limit'));
@@ -34,7 +34,7 @@ class UserController extends Controller
      */
     public function show(ShowUserRequest $request, User $user)
     {
-        return $user->load($request->input('with', []));
+        return $user->loadRelationships($request->input('with'));
     }
 
     /**
