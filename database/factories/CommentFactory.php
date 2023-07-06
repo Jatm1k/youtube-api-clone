@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -11,11 +12,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CommentFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    public function configure()
+    {
+        return $this->afterCreating(function (Comment $comment) {
+            if ($comment->replies()->exists()) return;
+
+            $comment->parent()->associate($this->findParentComment($comment))->save();
+        });
+    }
     public function definition(): array
     {
         return [
@@ -23,5 +27,13 @@ class CommentFactory extends Factory
             'user_id' => User::inRandomOrder()->first()->id,
             'video_id' => Video::inRandomOrder()->first()->id,
         ];
+    }
+
+    private function findParentComment(Comment $comment)
+    {
+        return $comment->video->comments()->doesntHave('parent')
+            ->where('id', '<>', $comment->id)
+            ->inRandomOrder()
+            ->first();
     }
 }
