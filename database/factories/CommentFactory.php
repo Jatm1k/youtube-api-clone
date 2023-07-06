@@ -12,28 +12,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CommentFactory extends Factory
 {
-    public function configure()
-    {
-        return $this->afterCreating(function (Comment $comment) {
-            if ($comment->replies()->exists()) return;
-
-            $comment->parent()->associate($this->findParentComment($comment))->save();
-        });
-    }
     public function definition(): array
     {
         return [
             'text' => fake()->sentences(rand(1, 8), true),
-            'user_id' => User::inRandomOrder()->first()->id,
-            'video_id' => Video::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id ?: User::factory(),
+            'video_id' => Video::inRandomOrder()->first()->id ?: Video::factory(),
         ];
     }
 
-    private function findParentComment(Comment $comment)
-    {
-        return $comment->video->comments()->doesntHave('parent')
-            ->where('id', '<>', $comment->id)
-            ->inRandomOrder()
-            ->first();
-    }
 }
