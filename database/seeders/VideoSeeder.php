@@ -15,6 +15,6 @@ class VideoSeeder extends Seeder
     public function run(): void
     {
         collect(Period::cases())
-            ->each(fn(Period $period) => Video::factory(20)->last($period)->create());
+            ->each(fn(Period $period) => Video::factory(5)->last($period)->create());
     }
 }

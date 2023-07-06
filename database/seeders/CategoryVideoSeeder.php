@@ -23,6 +23,6 @@ class CategoryVideoSeeder extends Seeder
 
     private function randomVideos($videos)
     {
-        return $videos->random(rand(1, count($videos)));
+        return $videos->random(rand(1, 5));
     }
 }
