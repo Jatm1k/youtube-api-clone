@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 
 class Video extends Model
 {
     use HasFactory;
 
-    protected static $relationships = ['channel', 'categories', 'playlists'];
+    protected static $relationships = ['channel', 'categories', 'playlists', 'comments'];
 
     protected $fillable = [
         'title',
@@ -33,6 +34,11 @@ class Video extends Model
     public function playlists():BelongsToMany
     {
         return $this->belongsToMany(Playlist::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function scopeFromPeriod($query, ?Period $period)

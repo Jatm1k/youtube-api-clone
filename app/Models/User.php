@@ -15,7 +15,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, WithRelationships;
 
-    protected static $relationships = ['channels'];
+    protected static $relationships = ['channels', 'comments'];
 
     protected $fillable = [
         'name',
@@ -36,6 +36,11 @@ class User extends Authenticatable
     public function channels(): HasMany
     {
         return $this->hasMany(Channel::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function scopeSearch($query, ?string $search)

@@ -28,20 +28,20 @@ trait WithRelationships
             ->all();
     }
 
-    private function hasRelationships(array $relationships)
+    public function hasRelationships(array $relationships)
     {
         return (bool) collect($relationships)
             ->reduce(fn ($model, $relationship) => $model?->hasRelationship($relationship), $this);
     }
 
-    private function hasRelationship(string $relationship)
+    public function hasRelationship(string $relationship)
     {
         return $this->isValidRelationship($relationship) ?
             $this->$relationship()->getRelated()
             : null;
     }
 
-    private function isValidRelationship(string $relationship)
+    public function isValidRelationship(string $relationship)
     {
         return method_exists($this, $relationship) && in_array($relationship, static::$relationships);
     }

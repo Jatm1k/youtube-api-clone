@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
@@ -14,4 +15,5 @@ Route::apiResources([
     'videos' => VideoController::class,
     'users' => UserController::class,
     'playlists' => PlaylistController::class,
+    'comments' => CommentController::class,
 ]);
