@@ -16,8 +16,6 @@ class CommentSeeder extends Seeder
     {
         Video::query()->take(3)->get()
             ->flatMap(fn(Video $video) => $this->forVideo($video))
-            ->flatMap(fn(Comment $comment) => $this->repliesOf($comment))
-            ->flatMap(fn(Comment $comment) => $this->repliesOf($comment))
             ->flatMap(fn(Comment $comment) => $this->repliesOf($comment));
     }
 

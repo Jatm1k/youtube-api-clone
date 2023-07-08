@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Period;
 use App\Http\Requests\Comment\IndexCommentRequest;
 use App\Http\Requests\Comment\ShowCommentRequest;
+use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -24,9 +25,17 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCommentRequest $request)
     {
-        //
+        $attributes = $request->validated();
+
+        if ($request->input('comment_id')) {
+            $attributes['video_id'] = Comment::query()->find($request->input('comment_id'))->video_id;
+        }
+
+        $attributes['user_id'] = auth()->id();
+
+        return Comment::query()->create($attributes);
     }
 
     /**
