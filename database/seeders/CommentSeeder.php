@@ -25,6 +25,6 @@ class CommentSeeder extends Seeder
     }
     private function repliesOf(Comment $comment)
     {
-        return Comment::factory(3)->for($comment->video)->for($comment, 'parent')->create();
+        return Comment::factory(3)->for($comment, 'parent')->create();
     }
 }

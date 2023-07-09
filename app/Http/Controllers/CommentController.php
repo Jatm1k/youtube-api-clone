@@ -31,11 +31,6 @@ class CommentController extends Controller
     {
         $attributes = $request->validated();
 
-        if ($request->input('comment_id')) {
-            $attributes['video_id'] = Comment::query()->find($request->input('comment_id'))->video_id;
-        }
-
-        $attributes['user_id'] = auth()->id();
 
         return Comment::query()->create($attributes);
     }
@@ -53,7 +48,7 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        throw_if($request->user()->isNot($comment->user), AuthorizationException::class);
+        $this->checkPremissions($comment, $request);
         return $comment->update($request->validated());
     }
 
@@ -62,7 +57,12 @@ class CommentController extends Controller
      */
     public function destroy(Request $request, Comment $comment)
     {
-        throw_if($request->user()->isNot($comment->user), AuthorizationException::class);
+        $this->checkPremissions($comment, $request);
         return $comment->delete();
+    }
+
+    private function checkPremissions(Comment $comment, Request $request)
+    {
+        throw_if($request->user()->isNot($comment->user), AuthorizationException::class);
     }
 }

@@ -16,6 +16,17 @@ class Comment extends Model
 
     protected $fillable = ['text', 'user_id', 'video_id', 'comment_id'];
 
+    protected static function booted()
+    {
+        static::saving(function (Comment $comment) {
+            $comment->user_id = $comment->user_id ?: auth()->id();
+
+            if ($comment->comment_id) {
+                $comment->video_id = Comment::query()->find($comment->comment_id)->video_id;
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

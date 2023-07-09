@@ -21,4 +21,9 @@ class CommentFactory extends Factory
         ];
     }
 
+    public function reply()
+    {
+        return $this->state(fn ($attributes) => ['comment_id' => Video::inRandomOrder()->first()->id ?: Video::factory()]);
+    }
+
 }
