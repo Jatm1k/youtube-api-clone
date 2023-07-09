@@ -8,6 +8,7 @@ use App\Http\Requests\Comment\ShowCommentRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Models\Comment;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -52,6 +53,7 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
+        throw_if($request->user()->isNot($comment->user), AuthorizationException::class);
         return $comment->update($request->validated());
     }
 
