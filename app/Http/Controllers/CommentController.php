@@ -6,6 +6,7 @@ use App\Enums\Period;
 use App\Http\Requests\Comment\IndexCommentRequest;
 use App\Http\Requests\Comment\ShowCommentRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
+use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -49,9 +50,9 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        return $comment->update($request->validated());
     }
 
     /**
