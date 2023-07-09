@@ -60,8 +60,9 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Request $request, Comment $comment)
     {
-        //
+        throw_if($request->user()->isNot($comment->user), AuthorizationException::class);
+        return $comment->delete();
     }
 }
