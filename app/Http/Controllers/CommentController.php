@@ -39,7 +39,7 @@ class CommentController extends Controller
      */
     public function show(ShowCommentRequest $request, Comment $comment)
     {
-        return $comment;
+        return $comment->loadRelationships($request->input('with'));
     }
 
     /**

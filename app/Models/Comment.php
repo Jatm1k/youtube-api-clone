@@ -4,13 +4,12 @@ namespace App\Models;
 
 use App\Traits\WithRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Comment extends Model
 {
-    use HasFactory, WithRelationships;
+    use HasFactory;
 
     protected static $relationships = ['user', 'video', 'parent', 'replies'];
 
