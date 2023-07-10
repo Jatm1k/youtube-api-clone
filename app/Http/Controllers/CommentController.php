@@ -8,8 +8,10 @@ use App\Http\Requests\Comment\ShowCommentRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -29,10 +31,7 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        $attributes = $request->validated();
-
-
-        return Comment::query()->create($attributes);
+        return Comment::query()->create($request->validated());
     }
 
     /**
@@ -48,21 +47,17 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        $this->checkPremissions($comment, $request);
+        Gate::allowIf(fn(User $user) => $comment->isOwnedBy($user));
         return $comment->update($request->validated());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, Comment $comment)
+    public function destroy(Comment $comment)
     {
-        $this->checkPremissions($comment, $request);
+        Gate::allowIf(fn(User $user) => $comment->isOwnedBy($user));
         return $comment->delete();
     }
 
-    private function checkPremissions(Comment $comment, Request $request)
-    {
-        throw_if($request->user()->isNot($comment->user), AuthorizationException::class);
-    }
 }

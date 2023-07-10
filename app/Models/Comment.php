@@ -46,4 +46,9 @@ class Comment extends Model
     {
         return $this->hasMany(Comment::class, 'comment_id');
     }
+
+    public function isOwnedBy(User $user)
+    {
+        return $user->id === $this->user_id;
+    }
 }
