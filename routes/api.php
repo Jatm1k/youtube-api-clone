@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PersonalAccessTokenController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
@@ -17,3 +18,5 @@ Route::apiResources([
     'playlists' => PlaylistController::class,
     'comments' => CommentController::class,
 ]);
+
+Route::post('/get-api-token', [PersonalAccessTokenController::class, 'store']);

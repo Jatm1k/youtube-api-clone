@@ -23,10 +23,10 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+//    protected $hidden = [
+//        'password',
+//        'remember_token',
+//    ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',

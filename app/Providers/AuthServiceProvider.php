@@ -21,6 +21,5 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        auth()->loginUsingId(1);
     }
 }
