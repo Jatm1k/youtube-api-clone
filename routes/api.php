@@ -19,4 +19,5 @@ Route::apiResources([
     'comments' => CommentController::class,
 ]);
 
-Route::post('/get-api-token', [PersonalAccessTokenController::class, 'store']);
+Route::post('/login', [PersonalAccessTokenController::class, 'store']);
+Route::delete('/logout', [PersonalAccessTokenController::class, 'destroy'])->middleware('auth:sanctum');
