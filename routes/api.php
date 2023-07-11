@@ -3,7 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\PersonalAccessTokenController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
@@ -19,5 +19,6 @@ Route::apiResources([
     'comments' => CommentController::class,
 ]);
 
-Route::post('/login', [PersonalAccessTokenController::class, 'store']);
-Route::delete('/logout', [PersonalAccessTokenController::class, 'destroy'])->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::delete('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');

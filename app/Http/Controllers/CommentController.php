@@ -19,6 +19,8 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
+        $this->middleware('ability:comment:update')->only('update');
+        $this->middleware('ability:comment:destroy')->only('destroy');
     }
 
     /**

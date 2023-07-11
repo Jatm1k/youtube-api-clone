@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 
-class StorePersonalAccessTokenRequest extends ApiRequest
+use App\Http\Requests\ApiRequest;
+
+class LoginRequest extends ApiRequest
 {
     public function rules(): array
     {

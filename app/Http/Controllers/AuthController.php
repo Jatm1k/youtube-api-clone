@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePersonalAccessTokenRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class PersonalAccessTokenController extends Controller
+class AuthController extends Controller
 {
-    public function store(StorePersonalAccessTokenRequest $request)
+    public function login(LoginRequest $request)
     {
         $user = User::query()->where('email', $request->input('email'))->first();
 
@@ -21,11 +22,20 @@ class PersonalAccessTokenController extends Controller
         }
 
         return response()->json([
-            'token' => $user->createToken($request->input('device_name'))->plainTextToken,
+            'token' => $user->createToken($request->input('device_name'), ['comment:update', 'comment:destroy'])->plainTextToken,
         ]);
     }
 
-    public function destroy(Request $request)
+    public function register(RegisterRequest $request)
+    {
+        return User::query()->create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+        ]);
+    }
+
+    public function logout(Request $request)
     {
         return $request->user()->currentAccessToken()->delete();
     }
