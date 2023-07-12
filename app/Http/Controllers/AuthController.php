@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\User;
+use App\Http\Requests\User\StoreUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request)
+    public function store(LoginRequest $request)
     {
 
         if (!Auth::attempt($request->validated())) {
@@ -21,23 +19,18 @@ class AuthController extends Controller
             ]);
         }
 
-        return response()->json([
-            'token' => auth()->user()->createToken('auth_token', ['comment:update', 'comment:destroy'])->plainTextToken,
-        ]);
-    }
-
-    public function register(RegisterRequest $request)
-    {
-        return User::query()->create($request->validated());
-    }
-
-    public function logout(Request $request)
-    {
-        return $request->user()->currentAccessToken()->delete();
+        return response(auth()->user());
     }
 
     public function destroy(Request $request)
     {
-        return $request->user()->delete();
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return response()->noContent();
     }
+
 }

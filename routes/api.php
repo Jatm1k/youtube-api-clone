@@ -19,7 +19,4 @@ Route::apiResources([
     'comments' => CommentController::class,
 ]);
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::delete('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::delete('/delete-account', [AuthController::class, 'destroy'])->middleware('auth:sanctum');
+Route::apiResource('users', UserController::class)->except(['store', 'destroy']);
