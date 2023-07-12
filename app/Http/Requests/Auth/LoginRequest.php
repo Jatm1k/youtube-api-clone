@@ -12,7 +12,6 @@ class LoginRequest extends ApiRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
-            'device_name' => ['required', 'string'],
         ];
     }
 }
