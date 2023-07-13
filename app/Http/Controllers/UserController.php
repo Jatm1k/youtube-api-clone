@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\IndexUserRequest;
 use App\Http\Requests\User\ShowUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateProfileUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,6 +34,18 @@ class UserController extends Controller
         Auth::login($user);
 
         return response($user, Response::HTTP_CREATED);
+    }
+
+    public function showProfile(Request $request)
+    {
+        return response(auth()->user());
+    }
+
+    public function updateProfile(UpdateProfileUserRequest $request)
+    {
+        $request->user()->update($request->validated());
+
+        return response()->noContent();
     }
 
     /**

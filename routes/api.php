@@ -20,3 +20,6 @@ Route::apiResources([
 ]);
 
 Route::apiResource('users', UserController::class)->except(['store', 'destroy']);
+
+Route::get('/profile', [UserController::class, 'showProfile']);
+Route::put('/profile', [UserController::class, 'updateProfile']);
