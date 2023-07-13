@@ -7,6 +7,7 @@ use App\Http\Requests\User\ShowUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateProfileUserRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -31,9 +32,14 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = User::query()->create($request->validated());
+
+        event(new Registered($user));
+
         Auth::login($user);
 
-        return response($user, Response::HTTP_CREATED);
+        return response([
+            'message' => 'Thanks for signing up! Before getting started, could you verify your email.'
+        ], Response::HTTP_CREATED);
     }
 
     public function showProfile(Request $request)
